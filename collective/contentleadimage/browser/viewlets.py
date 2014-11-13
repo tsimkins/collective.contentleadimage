@@ -57,7 +57,7 @@ class LeadImageViewlet(ViewletBase):
 
         if imageField is not None and \
            imageField.getFilename(context) is not None and \
-           imageField.get_size(context) != 0:
+           imageField.get(context).get_size() != 0:
 
                 if self.full_width:
                     scale = "galleryzoom"

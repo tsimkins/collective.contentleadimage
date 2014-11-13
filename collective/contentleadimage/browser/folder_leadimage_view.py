@@ -25,7 +25,7 @@ class FolderLeadImageView(BrowserView):
         else:
             title = ''
         if field is not None:
-            if field.get_size(context) != 0:
+            if field.get(context).get_size() != 0:
                 scale = self.prefs.desc_scale_name
                 return field.tag(context, scale=scale, css_class=css_class, title=title)
         return ''

@@ -3,6 +3,7 @@ from collective.contentleadimage.config import IMAGE_FIELD_NAME, IMAGE_CAPTION_F
 
 from plone.indexer import indexer
 from zope.component import provideAdapter
+from ZODB.POSException import POSKeyError
 
 @indexer(ILeadImageable)
 def hasContentLeadImage(obj):
@@ -15,7 +16,12 @@ def hasContentLeadImage(obj):
 
     if field is not None:
         value = field.get(obj)
-        return not not value
+        try:
+            return not not value
+        except POSKeyError:
+            # Work around error where we have a field, but we run into
+            # a POSKeyError on upgrading Plone.
+            return False
 
 provideAdapter(hasContentLeadImage, name='hasContentLeadImage')
 
@@ -30,13 +36,14 @@ def getImageAndCaptionFields(context):
 
     (_IMAGE_FIELD_NAME, _IMAGE_CAPTION_FIELD_NAME) = getImageAndCaptionFieldNames(context)
 
-    # Use News Item image as Content Lead Image, if it exists
-    leadimagefield = context.getField(_IMAGE_FIELD_NAME)
-    leadimagecaption = context.getField(_IMAGE_CAPTION_FIELD_NAME)
-    
-    if leadimagefield and leadimagecaption:
-        return (leadimagefield, leadimagecaption)
-    elif leadimagefield:
-        return (leadimagefield, None)
-    else:
-        return (None, None)
+    if hasattr(context, 'getField'):
+        # Use News Item image as Content Lead Image, if it exists
+        leadimagefield = context.getField(_IMAGE_FIELD_NAME)
+        leadimagecaption = context.getField(_IMAGE_CAPTION_FIELD_NAME)
+        
+        if leadimagefield and leadimagecaption:
+            return (leadimagefield, leadimagecaption)
+        elif leadimagefield:
+            return (leadimagefield, None)
+
+    return (None, None)
