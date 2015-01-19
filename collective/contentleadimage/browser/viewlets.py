@@ -56,7 +56,6 @@ class LeadImageViewlet(ViewletBase):
 
 
         if imageField is not None and \
-           imageField.getFilename(context) and \
            imageField.get(context) and \
            imageField.get(context).get_size() != 0:
 
