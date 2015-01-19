@@ -241,11 +241,9 @@ class CropImageView(BrowserView):
             img_value = img_buffer.getvalue()
 
             if self.commit:
-                # Update image, caching filename
+                # Update image
                 image_field = self.getImageField()
-                filename = image_field.getFilename(self.context)
                 image_field.set(self.context, img_value)
-                image_field.setFilename(self.context, filename)
                 image_field.removeScales(self.context)
                 image_field.createScales(self.context)
                 return self.request.RESPONSE.redirect(self.context.absolute_url())
