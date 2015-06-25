@@ -198,7 +198,7 @@ class CropImageView(BrowserView):
         mt = getToolByName(self.context, 'portal_membership')
         member = mt.getAuthenticatedMember()
 
-        if not member.has_role('Manager', self.context):
+        if not (member.has_role('Manager', self.context) or member.has_role('Image Crop', self.context)):
             return False
 
         old_dimensions = self.imageDimensions()
