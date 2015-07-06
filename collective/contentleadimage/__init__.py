@@ -22,7 +22,7 @@ class ImageFormatValidator:
 
         content_type = value.headers.get('content-type', '')
 
-        if content_type not in ('image/jpeg', 'image/png', 'image/gif'):
+        if content_type not in ('image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'):
             return "Image should be a web-friendly format, such as JPG, PNG, or GIF"
 
         return 1
