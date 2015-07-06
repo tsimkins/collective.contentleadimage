@@ -56,6 +56,14 @@ if HAS_BLOB:
         """Image Field with blob support that uses sizes defined in plone.app.imaging
         """
 
+        # Add SVG to the allowable types.
+
+        _properties = BlobImageField._properties.copy()
+
+        _properties.update({
+            'allowable_content_types': ('image/gif', 'image/jpeg', 'image/png', 'image/svg+xml'),
+        })
+
         def getFilename(self, context):
             return IMAGE_FIELD_NAME
 
