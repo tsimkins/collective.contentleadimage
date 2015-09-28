@@ -52,8 +52,8 @@ class ILeadImagePrefsForm(Interface):
                        default=81,
                        required=True)
 
-    desc_scale_name = schema.Choice(title=_(u"'Description' image scale"),
-                               description=_(u'Please select scale which will be used next to Description field.'),
+    desc_scale_name = schema.Choice(title=_(u"'Listing' image scale"),
+                               description=_(u'Please select scale which will be used in folder listings.'),
                                required=True,
                                default='thumb',
                                vocabulary = u"collective.contentleadimage.scales_vocabulary",
