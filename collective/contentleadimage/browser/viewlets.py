@@ -77,7 +77,7 @@ class LeadImageViewlet(ViewletBase):
     def fullSizeURL(self):
         return '%s/%s_galleryzoom' % (self.context.absolute_url(), self.getImageFieldName())
         
-    def bodyTag(self, css_class=''):
+    def bodyTag(self, css_class='', scale=None):
         """ returns img tag """
 
         context = aq_inner(self.context)
@@ -90,10 +90,11 @@ class LeadImageViewlet(ViewletBase):
            imageField.get(context) and \
            imageField.get(context).get_size() != 0:
 
-                if self.full_width:
-                    scale = "galleryzoom"
-                else:
-                    scale = self.prefs.body_scale_name
+                if not scale:
+                    if self.full_width:
+                        scale = "galleryzoom"
+                    else:
+                        scale = self.prefs.body_scale_name
                 
                 return imageField.tag(context, scale=scale, css_class=css_class,
                                       alt=imageCaption, title=imageCaption)
